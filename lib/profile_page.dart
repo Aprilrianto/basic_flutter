@@ -10,29 +10,29 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  Color backgroundColor = Colors.white;
+  final List<Color> colors = [
+    Colors.white,
+    const Color.fromARGB(255, 82, 163, 229), // Biru
+    Colors.greenAccent.shade100, // Hijau Muda
+    Colors.pinkAccent.shade100, // Pink
+    Colors.orange.shade100, // Oranye
+    const Color.fromARGB(255, 169, 2, 246), // Ungu
+  ];
 
-  final Map<String, Color> colorOptions = {
-    'Putih': Colors.white,
-    'Biru': const Color.fromARGB(255, 82, 163, 229),
-    'Hijau Muda': Colors.green.shade100,
-    'Pink': Colors.pink.shade100,
-    'Oranye': Colors.orange.shade100,
-    'Ungu': const Color.fromARGB(255, 169, 2, 246),
-  };
+  int currentColorIndex = 0;
 
-  void changeBackgroundColor(Color color) {
+  void cycleBackgroundColor() {
     setState(() {
-      backgroundColor = color;
+      currentColorIndex = (currentColorIndex + 1) % colors.length;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: colors[currentColorIndex],
       appBar: AppBar(
-        backgroundColor: backgroundColor,
+        backgroundColor: colors[currentColorIndex],
         title: const Text("Profil"),
         centerTitle: false,
         elevation: 0,
@@ -53,37 +53,27 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             const SizedBox(height: 8),
             const Text(
-              'Sukoharjo,Gentan',
+              'Sukoharjo, Gentan',
               style: TextStyle(fontSize: 16, color: Colors.grey),
             ),
             const SizedBox(height: 30),
             const Text(
-              "Pilih Warna Background:",
+              "Tekan Tombol Untuk Ganti Warna Background:",
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 10),
-            Column(
-              children:
-                  colorOptions.entries.map((entry) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 4),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: entry.value,
-                          foregroundColor:
-                              entry.value.computeLuminance() > 0.5
-                                  ? Colors.black
-                                  : Colors.white,
-                          minimumSize: const Size(double.infinity, 45),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        onPressed: () => changeBackgroundColor(entry.value),
-                        child: Text('Warna ${entry.key}'),
-                      ),
-                    );
-                  }).toList(),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: cycleBackgroundColor,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.black87,
+                foregroundColor: Colors.white,
+                minimumSize: const Size(double.infinity, 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              child: const Text("Ganti Warna"),
             ),
           ],
         ),
